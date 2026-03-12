@@ -18,7 +18,8 @@ const Cuentas: React.FC = () => {
     cargarCuentas();
     // Inicializar tipos de gasto por defecto
     db.crearTiposGastoDefault().catch(console.error);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [db]);
 
   const cargarCuentas = async () => {
     try {
@@ -80,7 +81,7 @@ const Cuentas: React.FC = () => {
     }
   };
 
-  const handleEliminar = async (id: string) => {
+  const handleEliminar = async (id: string): Promise<void> => {
     if (!window.confirm('¿Está seguro que desea eliminar esta cuenta?')) return;
     try {
       setError(null);
@@ -135,10 +136,10 @@ const Cuentas: React.FC = () => {
           label: 'Tipo de Cuenta',
           requerido: true,
           opciones: [
-            { valor: 'corriente', etiqueta: 'Cuenta Corriente' },
-            { valor: 'ahorro', etiqueta: 'Cuenta de Ahorro' },
-            { valor: 'credito', etiqueta: 'Tarjeta de Crédito' },
-            { valor: 'efectivo', etiqueta: 'Efectivo' },
+            { value: 'corriente', label: 'Cuenta Corriente' },
+            { value: 'ahorro', label: 'Cuenta de Ahorro' },
+            { value: 'credito', label: 'Tarjeta de Crédito' },
+            { value: 'efectivo', label: 'Efectivo' },
           ],
         },
         {
@@ -159,20 +160,20 @@ const Cuentas: React.FC = () => {
 
   const columnasTabla = [
     {
-      clave: 'nombre',
-      encabezado: 'Nombre',
+      key: 'nombre',
+      label: 'Nombre',
     },
     {
-      clave: 'tipo',
-      encabezado: 'Tipo',
+      key: 'tipo',
+      label: 'Tipo',
     },
     {
-      clave: 'banco',
-      encabezado: 'Banco',
+      key: 'banco',
+      label: 'Banco',
     },
     {
-      clave: 'saldo',
-      encabezado: 'Saldo',
+      key: 'saldo',
+      label: 'Saldo',
       render: (valor: number) =>
         new Intl.NumberFormat('es-CO', {
           style: 'currency',
@@ -180,8 +181,8 @@ const Cuentas: React.FC = () => {
         }).format(valor),
     },
     {
-      clave: 'color',
-      encabezado: 'Color',
+      key: 'color',
+      label: 'Color',
       render: (valor: string) => (
         <div
           style={{
@@ -192,6 +193,48 @@ const Cuentas: React.FC = () => {
             border: '1px solid #ddd',
           }}
         />
+      ),
+    },
+    {
+      key: 'acciones',
+      label: 'Acciones',
+      render: (_: any, cuenta: Cuenta) => (
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEdit(cuenta);
+            }}
+            style={{
+              padding: '4px 8px',
+              backgroundColor: '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '12px',
+            }}
+          >
+            Editar
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEliminar(cuenta.id);
+            }}
+            style={{
+              padding: '4px 8px',
+              backgroundColor: '#e74c3c',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '12px',
+            }}
+          >
+            Eliminar
+          </button>
+        </div>
       ),
     },
   ];
@@ -256,7 +299,7 @@ const Cuentas: React.FC = () => {
               }
             }
             onSubmit={editingId ? handleActualizar : handleCrear}
-            etiquetaBoton={editingId ? 'Actualizar' : 'Crear'}
+            botonEnviar={editingId ? 'Actualizar' : 'Crear'}
           />
         </div>
       )}

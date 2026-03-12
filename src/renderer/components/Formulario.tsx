@@ -18,6 +18,7 @@ export interface FormularioProps {
   loading?: boolean;
   titulo?: string;
   botonEnviar?: string;
+  valoresIniciales?: any;
 }
 
 const Formulario: React.FC<FormularioProps> = ({
@@ -27,9 +28,10 @@ const Formulario: React.FC<FormularioProps> = ({
   loading = false,
   titulo,
   botonEnviar = 'Guardar',
+  valoresIniciales,
 }) => {
   const [datos, setDatos] = useState<any>(
-    campos.reduce((acc, campo) => ({ ...acc, [campo.nombre]: '' }), {})
+    valoresIniciales || campos.reduce((acc, campo) => ({ ...acc, [campo.nombre]: '' }), {})
   );
   const [errores, setErrores] = useState<any>({});
 

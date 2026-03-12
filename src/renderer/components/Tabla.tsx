@@ -1,5 +1,5 @@
 import React from 'react';
-import './Table.css';
+import './Tabla.css';
 
 export interface Columna {
   key: string;
