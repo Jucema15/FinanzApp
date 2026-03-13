@@ -62,13 +62,17 @@
   "build": {
     "appId": "com.finanzapp.app",
     "productName": "FinanzApp",
+    "publish": {
+      "provider": "generic",
+      "url": "https://example.com/releases/"
+    },
     "files": [
       "dist/**/*",
       "node_modules/**/*"
     ],
     "directories": {
       "buildResources": "public",
-      "output": "dist"
+      "output": "dist_electron"
     },
     "win": {
       "target": [
@@ -81,11 +85,20 @@
         "portable"
       ],
       "certificateFile": null,
-      "certificatePassword": null
+      "certificatePassword": null,
+      "signingHashAlgorithms": [
+        "sha256"
+      ]
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "FinanzApp"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
     }
   }
 }

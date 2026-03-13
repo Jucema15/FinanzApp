@@ -3,6 +3,7 @@ import { Transaccion, Cuenta, TipoGasto } from '../../types';
 import Tabla from '../components/Tabla';
 import Formulario, { CampoFormulario } from '../components/Formulario';
 import { useDatabase } from '../hooks';
+import { validadores } from '../utils/validaciones';
 
 const Transacciones: React.FC = () => {
   const db = useDatabase();
@@ -116,12 +117,14 @@ const Transacciones: React.FC = () => {
       label: 'Cantidad',
       requerido: true,
       placeholder: '1000.00',
+      validar: validadores.cantidad,
     },
     {
       nombre: 'fecha',
       tipo: 'date',
       label: 'Fecha',
       requerido: true,
+      validar: validadores.fecha,
     },
     {
       nombre: 'descripcion',
@@ -129,6 +132,7 @@ const Transacciones: React.FC = () => {
       label: 'Descripción',
       requerido: true,
       placeholder: 'Detalles de la transacción',
+      validar: validadores.descripcion,
     },
     {
       nombre: 'fuente',

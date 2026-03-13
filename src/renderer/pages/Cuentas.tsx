@@ -3,6 +3,7 @@ import { Cuenta } from '../../types';
 import Tabla from '../components/Tabla';
 import Formulario, { CampoFormulario } from '../components/Formulario';
 import { useDatabase } from '../hooks';
+import { validadores, formatos } from '../utils/validaciones';
 
 const Cuentas: React.FC = () => {
   const db = useDatabase();
@@ -113,6 +114,8 @@ const Cuentas: React.FC = () => {
           tipo: 'text',
           label: 'Nombre',
           requerido: true,
+          placeholder: 'Ej: Cuenta Principal',
+          validar: validadores.nombre,
         },
         {
           nombre: 'color',
@@ -120,6 +123,7 @@ const Cuentas: React.FC = () => {
           label: 'Color (Hex)',
           requerido: true,
           placeholder: '#FF6B6B',
+          validar: validadores.colorHex,
         },
       ]
     : [
@@ -129,6 +133,7 @@ const Cuentas: React.FC = () => {
           label: 'Nombre de la Cuenta',
           requerido: true,
           placeholder: 'Mi Cuenta Corriente',
+          validar: validadores.nombre,
         },
         {
           nombre: 'tipo',
@@ -148,6 +153,15 @@ const Cuentas: React.FC = () => {
           label: 'Banco/Institución',
           requerido: true,
           placeholder: 'Bancolombia',
+          validar: validadores.nombre,
+        },
+        {
+          nombre: 'saldo',
+          tipo: 'number',
+          label: 'Saldo Inicial',
+          requerido: true,
+          placeholder: '0',
+          validar: validadores.cantidad,
         },
         {
           nombre: 'color',
@@ -155,6 +169,7 @@ const Cuentas: React.FC = () => {
           label: 'Color (Codigo Hex)',
           requerido: true,
           placeholder: '#FF6B6B',
+          validar: validadores.colorHex,
         },
       ];
 
@@ -174,11 +189,7 @@ const Cuentas: React.FC = () => {
     {
       key: 'saldo',
       label: 'Saldo',
-      render: (valor: number) =>
-        new Intl.NumberFormat('es-CO', {
-          style: 'currency',
-          currency: 'COP',
-        }).format(valor),
+      render: (valor: number) => formatos.moneda(valor),
     },
     {
       key: 'color',
